@@ -9,12 +9,11 @@ export const parseExcelFile = async (fileBuffer) => {
     throw new Error("Excel file has no worksheets");
   }
 
-  // Get headers from first row
   const headers = [];
   const headerRow = worksheet.getRow(1);
   headerRow.eachCell((cell, colNumber) => {
     let headerValue = cell.value?.toString().toLowerCase().trim();
-    // Map common variations to standard headers
+
     const headerMap = {
       "full name": "name",
       fullname: "name",
@@ -54,7 +53,6 @@ export const parseExcelFile = async (fileBuffer) => {
     throw new Error(`Missing required columns: ${missingHeaders.join(", ")}`);
   }
 
-  // Parse rows
   const rows = [];
   const errors = [];
 
@@ -71,7 +69,6 @@ export const parseExcelFile = async (fileBuffer) => {
 
     if (isEmpty) continue;
 
-    // Extract data based on headers
     headers.forEach((header, colIndex) => {
       if (header) {
         const cell = row.getCell(colIndex);
